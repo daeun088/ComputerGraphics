@@ -7,7 +7,7 @@
   Linux
 - 실행명령어
 
-  g++ main.cpp -o kk_project -lGL -lGLU -lglut
+  make
 
 ### 커밋 컨벤션
 | 타입 | 설명 |
