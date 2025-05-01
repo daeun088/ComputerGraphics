@@ -174,27 +174,7 @@ void drawMouth() {
     glEnable(GL_LIGHTING);  // ← 다시 켜기
     glPopMatrix();
 }
-void drawUpperEyelid(float angle, float x, float y, float z, float scaleX = 1.0f, float scaleY = 1.0f) {
-    setColor(0, 0, 0);  // 검정색
-    glPushMatrix();
-    glTranslatef(x, y, z);
-    glRotated(angle, 0.0, 0.0, 1.0);
-    glScalef(scaleX, scaleY, 1.0f);
-    float width = 0.09f;
-    float heightInner = 0.05f;  // 이전보다 살짝 더 곡선
-    float heightOuter = 0.03f;
-    glBegin(GL_QUAD_STRIP);
-    for (float i = -1.0f; i <= 1.0f; i += 0.1f) {
-        float xPos = i * width;
-        float yInner = heightInner * (1 - pow(i, 2.0f));  // 곡률 조정
-        float yOuter = yInner + heightOuter;              // 아래로 두께감
-        float zCurve = -0.005f * pow(i, 2.0f);            // 가운데가 튀어나오고 양 끝이 뒤로 감
-        glVertex3f(xPos, yInner, zCurve);
-        glVertex3f(xPos, yOuter, zCurve);
-    }
-    glEnd();
-    glPopMatrix();
-}
+
 // 눈(텍스처 매핑)
 void drawEyeOnHeadSphere(float xOffset, float yOffset, float zOffset) {
     const float radius = 0.4f;              // 얼굴 구체의 반지름에 맞춤
