@@ -16,6 +16,38 @@ void drawBody()
     gluSphere(quad, 0.7f, 30, 30);   // 구체로 몸통 생성
     glPopMatrix();
 
+    // 왼쪽 어깨 그리기
+    glPushMatrix();
+    glTranslatef(-0.51f, 0.25f, 0.0f); // 위치 조정 (약간 아래로)
+    glScalef(0.3f, 0.2f, 0.25f);       // Z축으로 더 납작하게 변경
+    glColor3f(1.0f, 1.0f, 1.0f);       // 하얀색
+    gluSphere(quad, 0.7f, 20, 20);     // 구형 어깨
+    glPopMatrix();
+
+    // 왼쪽 어깨 연결부
+    glPushMatrix();
+    glTranslatef(-0.51f, 0.25f, 0.0f);             // 어깨 위치에서 시작
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);            // Y축으로 90도 회전
+    glColor3f(1.0f, 1.0f, 1.0f);                   // 하얀색
+    gluCylinder(quad, 0.15f, 0.15f, 0.2f, 20, 20); // 연결부 원통
+    glPopMatrix();
+
+    // 오른쪽 어깨 그리기
+    glPushMatrix();
+    glTranslatef(0.51f, 0.25f, 0.0f); // 위치 조정 (약간 아래로)
+    glScalef(0.3f, 0.2f, 0.25f);      // Z축으로 더 납작하게 변경
+    glColor3f(1.0f, 1.0f, 1.0f);      // 하얀색
+    gluSphere(quad, 0.7f, 20, 20);    // 구형 어깨
+    glPopMatrix();
+
+    // 오른쪽 어깨 연결부
+    glPushMatrix();
+    glTranslatef(0.51f, 0.25f, 0.0f);              // 어깨 위치에서 시작
+    glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);           // Y축으로 -90도 회전
+    glColor3f(1.0f, 1.0f, 1.0f);                   // 하얀색
+    gluCylinder(quad, 0.15f, 0.15f, 0.2f, 20, 20); // 연결부 원통
+    glPopMatrix();
+
     // 왼쪽 팔 그리기
     glPushMatrix();
     glTranslatef(-0.55f, 0.3f, 0.0f);              // 몸통 왼쪽으로 이동 (약간 위로)
