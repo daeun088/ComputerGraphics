@@ -1,6 +1,7 @@
 #include <GL/glut.h>
 
 #include <cmath>
+#include "upper_body.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -13,7 +14,7 @@ double asp;
 double ecX, ecY, ecZ;
 
 // 회전/줌 상태
-float angleX = 0, angleY = 0, zoom = -3.0;
+float angleX = 0, angleY = 0, zoom = -5.0; //zoom이 처음 시작 시점 위치
 int prevX, prevY;
 bool isDragging = false;
 GLuint eyeTexture;
@@ -44,14 +45,47 @@ GLuint loadTexture(const char* filename) {
 }
 
 // 조명
+// void initLighting() {
+//     GLfloat pos[] = {1, 1, 2, 1};
+//     GLfloat amb[] = {0.2, 0.2, 0.2, 1};
+//     GLfloat diff[] = {0.9, 0.9, 0.9, 1};
+//     glLightfv(GL_LIGHT0, GL_POSITION, pos);
+//     glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
+//     glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
+// }
+
+// 엄청 밝은 조명
+// void initLighting() {
+//     GLfloat pos[] = {0, 0, 1, 0};         // w = 0 → 방향성 광원 (무한히 멀리서 균일하게 비추는 빛)
+//     GLfloat amb[] = {0.9, 0.9, 0.9, 1};   // 거의 흰색 주변광 → 전체를 같은 밝기로
+//     GLfloat diff[] = {0.0, 0.0, 0.0, 1};  // 확산광 제거
+
+//     glLightfv(GL_LIGHT0, GL_POSITION, pos);
+//     glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
+//     glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
+
+//     // 🔒 감쇠 제거 → 어차피 방향성 광원이므로 필요 없음
+//     glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
+//     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0);
+//     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0);
+// }
+
+//적절한 조명
 void initLighting() {
-    GLfloat pos[] = {1, 1, 2, 1};
-    GLfloat amb[] = {0.2, 0.2, 0.2, 1};
-    GLfloat diff[] = {0.9, 0.9, 0.9, 1};
+    GLfloat pos[] = {0.0f, 3.5f, 1.3f, 0.0f};   // 위쪽에서 약간 앞쪽 방향 (자연광 느낌)
+    GLfloat amb[] = {0.7f, 0.7f, 0.7f, 1.7f};   // 주변광: 충분히 밝지만 너무 세지 않게
+    GLfloat diff[] = {0.2f, 0.2f, 0.2f, 1.0f};  // 확산광: 입체감 살림
+
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
+
+    // 감쇠 최소화 → 거리에 관계없이 거의 균일하게
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.02f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.005f);
 }
+
 // 🔧 색상 지정 함수
 void setColor(float r, float g, float b) { glColor3f(r, g, b); }
 
@@ -225,6 +259,10 @@ void drawEyeOnHeadSphere(float xOffset, float yOffset, float zOffset) {
 
 // 얼굴 전체 함수
 void drawKKHead() {
+    glPushMatrix();                  // 얼굴 전체 이동용
+    glTranslatef(0.0f, 1.4f, 0.0f);  // ⬅️ y축 위로 이동
+    glScalef(2.2, 2.2, 2.2);         // 조금 납작하게
+    glEnable(GL_LIGHTING);
     GLUquadric* quad = gluNewQuadric();
     int num = -1;
     while (num > -128) {
@@ -248,6 +286,7 @@ void drawKKHead() {
     drawSnout();
     drawNose();
     drawMouth();
+    glPopMatrix();  // 얼굴 전체 이동 마무리
 }
 
 // 디스플레이 콜백
@@ -260,6 +299,7 @@ void display() {
     glRotatef(angleY, 0, 1, 0);
 
     drawKKHead();
+    drawBody();  // 몸통 그리기
 
     glutSwapBuffers();
 }
@@ -293,7 +333,7 @@ void reshape(int width, int height) {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60, (double)width / height, 1.0, 100.0);
+    gluPerspective(60, (double)width / height, 1.0, 10.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -320,20 +360,4 @@ int main(int argc, char* argv[]) {
     glutMainLoop();
     return 0;
 
-    // glutInit(&argc, argv);
-    // glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    // glutInitWindowSize(800, 600);
-    // glutInitWindowPosition(100, 100);
-    // glutCreateWindow("K.K. Concert!");
-    // //initGlobals();
-    // //initSkybox();
-    // glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_TEXTURE_2D);
-    // glEnable(GL_LIGHTING);
-    // glEnable(GL_LIGHT0);
-    // // glutDisplayFunc(display);
-    // // glutReshapeFunc(reshape);
-    // //glutIdleFunc(idle);
-    // glutMainLoop();
-    // return 0;
 }
