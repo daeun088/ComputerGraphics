@@ -1,4 +1,5 @@
 // upper_body.cpp
+#include "upper_body.h"
 #include <GL/glut.h>
 
 // 전역 변수 선언
@@ -75,23 +76,23 @@ void drawBody()
     gluDeleteQuadric(quad);
 }
 
-void display()
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+// void display()
+// {
+//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//     glLoadIdentity();
 
-    // 카메라 위치 세팅
-    gluLookAt(0, 0, 3.0, // 카메라 위치
-              0, 0, 0,   // 바라보는 지점
-              0, 1, 0);  // 위쪽 방향
+//     // 카메라 위치 세팅
+//     gluLookAt(0, 0, 3.0, // 카메라 위치
+//               0, 0, 0,   // 바라보는 지점
+//               0, 1, 0);  // 위쪽 방향
 
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+//     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-    // 회전 적용
-    glRotatef(angleX, 1.0f, 0.0f, 0.0f); // X축 회전
-    glRotatef(angleY, 0.0f, 1.0f, 0.0f); // Y축 회전
+//     // 회전 적용
+//     glRotatef(angleX, 1.0f, 0.0f, 0.0f); // X축 회전
+//     glRotatef(angleY, 0.0f, 1.0f, 0.0f); // Y축 회전
 
-    drawBody(); // 몸통 그리기
+//     drawBody(); // 몸통 그리기
 
-    glutSwapBuffers();
-}
+//     glutSwapBuffers();
+// }
