@@ -169,15 +169,6 @@ void drawFootWithToes(float xOffset)
         // ✔️ 크기 확대 반영한 반구 발가락
         glutSolidSphere(0.25, 24, 24); // 기존 0.025 → 0.25
                                        // 발가락 밑면 닫기
-        // glBegin(GL_TRIANGLE_FAN);
-        // glNormal3f(0, -1, 0);
-        // glVertex3f(0, -0.013f, 0);  // 중심
-        // for (int i = 0; i <= 24; ++i) {
-        //   float theta = 2.0f * M_PI * i / 24;
-        //   float x = 0.025f * cosf(theta);  // 발가락 반지름
-        //   float z = 0.025f * sinf(theta);
-        //   glVertex3f(x, -0.013f, z);
-        // }
         glEnd();
 
         glDisable(GL_CLIP_PLANE0);
