@@ -1,5 +1,4 @@
-// upper_body.cpp
-#include "upper_body.h"
+#include "body.h"
 #include <GL/glut.h>
 
 // 전역 변수 선언
