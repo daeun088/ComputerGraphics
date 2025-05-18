@@ -3,6 +3,7 @@
 #include "head.h"
 #include "leg.h"
 #include "background.h"
+#include "guitar.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -100,6 +101,18 @@ void display()
     drawFootWithToes(0.0f);
     glPopMatrix();
 
+
+    glPushMatrix();
+    glTranslatef(1.5f, 0.1f, 0.0f);  // 캐릭터 중심 기준 위치 조정
+    glScalef(2.25f, 2.25f, 2.25);  
+    //glRotatef(angleX, 1, 0, 0);
+    //glRotatef(angleY, 0, 1, 0);     // 기타 크기 조정
+    drawGuitar();
+    glPopMatrix();
+
+
+
+
     glutSwapBuffers();
 }
 // 마우스 회전
@@ -158,6 +171,7 @@ int main(int argc, char *argv[])
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glClearColor(0.1, 0.5, 0.5, 1.0);
     eyeTexture = loadTexture("kk_eye1.png");
+    loadAllTextures();// 기타 텍스처매핑
     initLighting();
 
     glutDisplayFunc(display);
