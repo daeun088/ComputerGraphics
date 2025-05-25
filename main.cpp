@@ -2,6 +2,8 @@
 #include "body.h"
 #include "head.h"
 #include "leg.h"
+#include "background.h"
+#include "guitar.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -72,11 +74,14 @@ GLuint loadTexture(const char *filename)
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    drawSkybox();
 
+    glLoadIdentity();
     glTranslatef(0, 0, zoom);
     glRotatef(angleX, 1, 0, 0);
     glRotatef(angleY, 0, 1, 0);
+
+    drawGround();
 
     drawKKHead();
     drawBody(); // 몸통 그리기
@@ -95,6 +100,18 @@ void display()
     glScalef(0.55f, 0.55f, 0.55f);
     drawFootWithToes(0.0f);
     glPopMatrix();
+
+
+    glPushMatrix();
+    glTranslatef(1.5f, 0.1f, 0.0f);  // 캐릭터 중심 기준 위치 조정
+    glScalef(2.25f, 2.25f, 2.25);  
+    //glRotatef(angleX, 1, 0, 0);
+    //glRotatef(angleY, 0, 1, 0);     // 기타 크기 조정
+    drawGuitar();
+    glPopMatrix();
+
+
+
 
     glutSwapBuffers();
 }
@@ -136,7 +153,7 @@ void reshape(int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60, (double)width / height, 1.0, 10.0);
+    gluPerspective(80, (double)width / height, 1.0, 1000.0); //1000으로 수정!!중요!!작게하면 줌아웃시 캐릭터 사라짐
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -154,6 +171,7 @@ int main(int argc, char *argv[])
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glClearColor(0.1, 0.5, 0.5, 1.0);
     eyeTexture = loadTexture("kk_eye1.png");
+    loadAllTextures();// 기타 텍스처매핑
     initLighting();
 
     glutDisplayFunc(display);
