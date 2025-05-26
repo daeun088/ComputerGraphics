@@ -118,7 +118,7 @@ void display()
 
     // 트리(캐릭터 왼쪽에 배치)
     glPushMatrix();
-    glTranslatef(-2.0f, -1.0f, 0.0f); // 위치 조정
+    glTranslatef(-2.5f, -1.0f, -2.5f); // 위치 조정
     drawTree();
     glPopMatrix();
 

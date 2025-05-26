@@ -8,7 +8,9 @@ void drawTree()
     glDisable(GL_LIGHTING); // 조명 비활성화
 
     glPushMatrix();
-    glTranslatef(0.0f, -0.8f, 0.0f); // 전체 나무를 아래로 이동
+    glTranslatef(0.0f, -0.70f, 0.0f); // 전체 나무를 아래로 이동
+
+    glScalef(2.3f, 2.3f, 2.3f);
 
     // 1. 몸통(기둥) - 세로로 세우기
     glPushMatrix();
@@ -16,7 +18,7 @@ void drawTree()
     GLUquadric *quad = gluNewQuadric();
     glRotatef(-90, 1, 0, 0);
     glTranslatef(0, 0, 0);
-    gluCylinder(quad, 0.18, 0.13, 1.0, 32, 32); // 아래가 더 굵은 원기둥
+    gluCylinder(quad, 0.2, 0.13, 1.0, 32, 32); // 아래가 더 굵은 원기둥
     glPopMatrix();
 
     // 2. 뿌리 6개
