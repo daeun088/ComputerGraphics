@@ -2,7 +2,7 @@
 TARGET = kk_project
 
 # 소스 파일 목록
-SRC = main.cpp body.cpp head.cpp leg.cpp background.cpp guitar.cpp
+SRC = main.cpp body.cpp head.cpp leg.cpp background.cpp guitar.cpp tree.cpp
 
 # 컴파일러 및 옵션
 CXX = g++
