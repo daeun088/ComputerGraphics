@@ -4,6 +4,7 @@
 #include "leg.h"
 #include "background.h"
 #include "guitar.h"
+#include "tree.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -70,10 +71,15 @@ GLuint loadTexture(const char *filename)
     return texture;
 }
 
+// 전역 변수
+float markerX = 0, markerY = 0, markerZ = 0;
+bool showMarker = false;
+
 // 디스플레이 콜백
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
     drawSkybox();
 
     glLoadIdentity();
@@ -83,10 +89,10 @@ void display()
 
     drawGround();
 
+    // 캐릭터
     drawKKHead();
-    drawBody(); // 몸통 그리기
+    drawBody();
 
-    // 양쪽 다리 그리기
     glPushMatrix();
     glTranslatef(-0.3f, -1.85f, 0.1f);
     glRotatef(180, 0, 1, 0);
@@ -101,24 +107,27 @@ void display()
     drawFootWithToes(0.0f);
     glPopMatrix();
 
-
+    // 기타 (원래 위치에)
     glPushMatrix();
-    glTranslatef(1.5f, 0.1f, 0.0f);  // 캐릭터 중심 기준 위치 조정
-    glScalef(2.25f, 2.25f, 2.25);  
-    //glRotatef(angleX, 1, 0, 0);
-    //glRotatef(angleY, 0, 1, 0);     // 기타 크기 조정
+    glTranslatef(1.5f, 0.1f, 0.0f); // 캐릭터 중심 기준 위치 조정
+    glScalef(2.25f, 2.25f, 2.25);
+    // glRotatef(angleX, 1, 0, 0);
+    // glRotatef(angleY, 0, 1, 0);     // 기타 크기 조정
     drawGuitar();
     glPopMatrix();
 
-
-
+    // 트리(캐릭터 왼쪽에 배치)
+    glPushMatrix();
+    glTranslatef(-2.5f, -1.0f, -2.5f); // 위치 조정
+    drawTree();
+    glPopMatrix();
 
     glutSwapBuffers();
 }
 // 마우스 회전
 void mouseButton(int button, int state, int x, int y)
 {
-    if (button == GLUT_LEFT_BUTTON)
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
         isDragging = (state == GLUT_DOWN);
         prevX = x;
@@ -153,7 +162,7 @@ void reshape(int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(80, (double)width / height, 1.0, 1000.0); //1000으로 수정!!중요!!작게하면 줌아웃시 캐릭터 사라짐
+    gluPerspective(80, (double)width / height, 1.0, 1000.0); // 1000으로 수정!!중요!!작게하면 줌아웃시 캐릭터 사라짐
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -171,7 +180,7 @@ int main(int argc, char *argv[])
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glClearColor(0.1, 0.5, 0.5, 1.0);
     eyeTexture = loadTexture("kk_eye1.png");
-    loadAllTextures();// 기타 텍스처매핑
+    loadAllTextures(); // 기타 텍스처매핑
     initLighting();
 
     glutDisplayFunc(display);
