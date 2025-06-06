@@ -1,16 +1,16 @@
-#include "background.h"
-
+#include "stb_image.h"
 #include <GL/glut.h>
-
 #include "stb_image.h"
 
 GLuint textures[6];
 extern float angleX, angleY;
 
-GLuint loadSkyboxTexture(const char *filename) {
+GLuint loadSkyboxTexture(const char *filename)
+{
     int width, height, channels;
     unsigned char *image = stbi_load(filename, &width, &height, &channels, STBI_rgb_alpha);
-    if (!image) {
+    if (!image)
+    {
         printf("Failed to load: %s\n", filename);
         return 0;
     }
@@ -24,7 +24,8 @@ GLuint loadSkyboxTexture(const char *filename) {
     return texID;
 }
 
-void drawQuad(float size) {
+void drawQuad(float size)
+{
     float texScale = 1.0f;
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
@@ -38,19 +39,21 @@ void drawQuad(float size) {
     glEnd();
 }
 
-void drawSkybox() {
+void drawSkybox()
+{
     static bool loaded = false;
-    if (!loaded) {
-        textures[0] = loadSkyboxTexture("backgroundImage/front.png");
-        textures[1] = loadSkyboxTexture("backgroundImage/back1.png");
-        textures[2] = loadSkyboxTexture("backgroundImage/left1.png");
-        textures[3] = loadSkyboxTexture("backgroundImage/right1.png");
-        textures[4] = loadSkyboxTexture("backgroundImage/top.png");
-        textures[5] = loadSkyboxTexture("backgroundImage/bottom.png");
+    if (!loaded)
+    {
+        textures[0] = loadSkyboxTexture("Image/background/front.png");
+        textures[1] = loadSkyboxTexture("Image/background/back1.png");
+        textures[2] = loadSkyboxTexture("Image/background/left1.png");
+        textures[3] = loadSkyboxTexture("Image/background/right1.png");
+        textures[4] = loadSkyboxTexture("Image/background/top.png");
+        textures[5] = loadSkyboxTexture("Image/background/bottom.png");
         loaded = true;
     }
 
-    float size = 2.0f;  // 크기 증가
+    float size = 2.0f; // 크기 증가
     float offset = 0.0f;
 
     // float size = 200.0f;
@@ -58,7 +61,7 @@ void drawSkybox() {
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);  // ✅ 내부에서 보이게
+    glDisable(GL_CULL_FACE); // ✅ 내부에서 보이게
     glEnable(GL_TEXTURE_2D);
 
     // ✅ 카메라 위치 기준으로 skybox 고정
@@ -71,7 +74,7 @@ void drawSkybox() {
     glBindTexture(GL_TEXTURE_2D, textures[1]);
     glPushMatrix();
     glTranslatef(0, 0, offset);
-    glScalef(-1, -1, 1);  // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
     drawQuad(size);
     glPopMatrix();
 
@@ -80,7 +83,7 @@ void drawSkybox() {
     glPushMatrix();
     glTranslatef(0, 0, -offset);
     glRotatef(180, 0, 1, 0);
-    glScalef(-1, -1, 1);  // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
     drawQuad(size);
     glPopMatrix();
 
@@ -89,7 +92,7 @@ void drawSkybox() {
     glPushMatrix();
     glTranslatef(-offset, 0, 0);
     glRotatef(-90, 0, 1, 0);
-    glScalef(-1, -1, 1);  // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
     drawQuad(size);
     glPopMatrix();
 
@@ -98,7 +101,7 @@ void drawSkybox() {
     glPushMatrix();
     glTranslatef(offset, 0, 0);
     glRotatef(90, 0, 1, 0);
-    glScalef(-1, -1, 1);  // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
     drawQuad(size);
     glPopMatrix();
 
@@ -118,16 +121,19 @@ void drawSkybox() {
     drawQuad(size);
     glPopMatrix();
 
-    glPopMatrix();  // MODELVIEW
-    glPopAttrib();  // 상태 복원
+    glPopMatrix(); // MODELVIEW
+    glPopAttrib(); // 상태 복원
 }
-void drawGround() {
+void drawGround()
+{
     static GLuint groundTex = 0;
     static bool groundLoaded = false;
 
-    if (!groundLoaded) {
-        groundTex = loadSkyboxTexture("backgroundImage/field.png");  // ✅ 상대경로 확인
-        if (groundTex == 0) {
+    if (!groundLoaded)
+    {
+        groundTex = loadSkyboxTexture("Image/background/field.png"); // ✅ 상대경로 확인
+        if (groundTex == 0)
+        {
             printf("Failed to load field.png only once\n");
             return;
         }

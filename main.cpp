@@ -1,10 +1,5 @@
 #include <GL/glut.h>
-#include "body.h"
-#include "head.h"
-#include "leg.h"
-#include "background.h"
-#include "guitar.h"
-#include "tree.h"
+#include "kk_headers.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -179,7 +174,7 @@ int main(int argc, char *argv[])
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glClearColor(0.1, 0.5, 0.5, 1.0);
-    eyeTexture = loadTexture("kk_eye1.png");
+    eyeTexture = loadTexture("Image/kk_eye1.png");
     loadAllTextures(); // 기타 텍스처매핑
     initLighting();
 

@@ -1,6 +1,5 @@
 // main.cpp - Textured Guitar with Proper Neck Placement and State Management
-#include "guitar.h"
-// #include <GL/glut.h>
+#include "kk_headers.h"
 #include <vector>
 #include <array>
 #include <cmath>
@@ -117,11 +116,11 @@ GLuint loadTexture2(const char *filename)
 
 void loadAllTextures()
 {
-    texFront = loadTexture2("guitar_body.png");
-    texBack = loadTexture2("guitar_back.png");
-    texSide = loadTexture2("guitar_side.png");
-    texHead = loadTexture2("guitar_headstock.png");
-    texNeck = loadTexture2("guitar_neck.png");
+    texFront = loadTexture2("Image/guitar/guitar_body.png");
+    texBack = loadTexture2("Image/guitar/guitar_back.png");
+    texSide = loadTexture2("Image/guitar/guitar_side.png");
+    texHead = loadTexture2("Image/guitar/guitar_headstock.png");
+    texNeck = loadTexture2("Image/guitar/guitar_neck.png");
 }
 
 void setupLighting()

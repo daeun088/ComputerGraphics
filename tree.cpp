@@ -1,7 +1,7 @@
-#include "tree.h"
+#include "kk_headers.h"
+#include "stb_image.h"
 #include <GL/glut.h>
 #include <cmath>
-#include "stb_image.h"
 
 // loadTexture 함수 선언을 가장 위에!
 extern GLuint loadTexture(const char *filename);
@@ -17,7 +17,7 @@ void initLeafTexture()
 {
     if (leafTexture == 0)
     {
-        leafTexture = loadTexture("Stylized_Leaves_002_basecolor.jpg");
+        leafTexture = loadTexture("Image/tree/leaf.jpg");
     }
 }
 
@@ -26,7 +26,7 @@ void initBarkTexture()
 {
     if (barkTexture == 0)
     {
-        barkTexture = loadTexture("Wood_Bark_006_basecolor.jpg");
+        barkTexture = loadTexture("Image/tree/wood.jpg");
     }
 }
 

@@ -1,4 +1,4 @@
-#include "body.h"
+#include "kk_headers.h"
 #include <GL/glut.h>
 
 // 전역 변수 선언
