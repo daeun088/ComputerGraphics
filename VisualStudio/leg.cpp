@@ -1,5 +1,5 @@
 #include "kk_headers.h"
-#include <GL/glut.h>
+#include <glut.h>
 #include <vector>
 #include <array>
 #include <cmath>

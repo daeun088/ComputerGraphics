@@ -1,13 +1,14 @@
-#include <GL/glut.h>
+#include <windows.h>
 #include "kk_headers.h"
+#include <glut.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #include <vector>
 #include <array>
 #include <cmath>
+#include <algorithm>
 
-// 전역 변수 선언
 int windowWidth, windowHeight;
 int th, ph;
 double dim;
@@ -15,24 +16,28 @@ int fov;
 double asp;
 double ecX, ecY, ecZ;
 
-// 회전/줌 상태
-float angleX = 0, angleY = 0, zoom = -5.0; // zoom이 처음 시작 시점 위치
+float angleX = 0, angleY = 0, zoom = -5.0;
 int prevX, prevY;
 bool isDragging = false;
 GLuint eyeTexture;
 
-// 조명
+void display();
+void reshape(int width, int height);
+void keyboard(unsigned char key, int x, int y);
+void mouseButton(int button, int state, int x, int y);
+void mouseMotion(int x, int y);
+
+
 void initLighting()
 {
-    GLfloat pos[] = {0.0f, 3.5f, 1.3f, 0.0f};  // 위쪽에서 약간 앞쪽 방향 (자연광 느낌)
-    GLfloat amb[] = {0.7f, 0.7f, 0.7f, 1.7f};  // 주변광: 충분히 밝지만 너무 세지 않게
-    GLfloat diff[] = {0.2f, 0.2f, 0.2f, 1.0f}; // 확산광: 입체감 살림
+    GLfloat pos[] = {0.0f, 3.5f, 1.3f, 0.0f};
+    GLfloat amb[] = {0.7f, 0.7f, 0.7f, 1.7f};
+    GLfloat diff[] = {0.2f, 0.2f, 0.2f, 1.0f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
 
-    // 감쇠 최소화 → 거리에 관계없이 거의 균일하게
     glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.02f);
     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.005f);
@@ -53,24 +58,20 @@ GLuint loadTexture(const char *filename)
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    // 텍스처 파라미터
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    // 이미지 업로드
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
     stbi_image_free(image);
     return texture;
 }
 
-// 전역 변수
 float markerX = 0, markerY = 0, markerZ = 0;
 bool showMarker = false;
 
-// 디스플레이 콜백
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -84,7 +85,6 @@ void display()
 
     drawGround();
 
-    // 캐릭터
     drawKKHead();
     drawBody();
 
@@ -102,24 +102,20 @@ void display()
     drawFootWithToes(0.0f);
     glPopMatrix();
 
-    // 기타 (원래 위치에)
     glPushMatrix();
-    glTranslatef(1.5f, 0.1f, 0.0f); // 캐릭터 중심 기준 위치 조정
+    glTranslatef(1.5f, 0.1f, 0.0f); 
     glScalef(2.25f, 2.25f, 2.25);
-    // glRotatef(angleX, 1, 0, 0);
-    // glRotatef(angleY, 0, 1, 0);     // 기타 크기 조정
     drawGuitar();
     glPopMatrix();
 
-    // 트리(캐릭터 왼쪽에 배치)
     glPushMatrix();
-    glTranslatef(-2.5f, -1.0f, -2.5f); // 위치 조정
+    glTranslatef(-2.5f, -1.0f, -2.5f);
     drawTree();
     glPopMatrix();
 
     glutSwapBuffers();
 }
-// 마우스 회전
+
 void mouseButton(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -141,23 +137,26 @@ void mouseMotion(int x, int y)
         glutPostRedisplay();
     }
 }
-// 키보드 줌
+
 void keyboard(unsigned char key, int x, int y)
 {
     if (key == 'a')
+    {
         zoom += 0.3f;
-    if (key == 'z')
+    }
+    else if (key == 'z')
+    {
         zoom -= 0.3f;
+    }
     glutPostRedisplay();
 }
 
-// 리사이즈
 void reshape(int width, int height)
 {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(80, (double)width / height, 1.0, 1000.0); // 1000으로 수정!!중요!!작게하면 줌아웃시 캐릭터 사라짐
+    gluPerspective(80, (double)width / height, 1.0, 1000.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -175,7 +174,7 @@ int main(int argc, char *argv[])
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glClearColor(0.1, 0.5, 0.5, 1.0);
     eyeTexture = loadTexture("Image/kk_eye1.png");
-    loadAllTextures(); // 기타 텍스처매핑
+    loadAllTextures();
     initLighting();
 
     glutDisplayFunc(display);

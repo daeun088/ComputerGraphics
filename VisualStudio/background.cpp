@@ -1,6 +1,5 @@
 #include "stb_image.h"
-#include <GL/glut.h>
-#include "stb_image.h"
+#include <glut.h>
 
 GLuint textures[6];
 extern float angleX, angleY;
@@ -53,55 +52,48 @@ void drawSkybox()
         loaded = true;
     }
 
-    float size = 2.0f; // 크기 증가
+    float size = 2.0f;
     float offset = 0.0f;
 
-    // float size = 200.0f;
-    // float half = size / 2.0f;
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE); // ✅ 내부에서 보이게
+    glDisable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
 
-    // ✅ 카메라 위치 기준으로 skybox 고정
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
     glRotatef(angleX, 1, 0, 0);
     glRotatef(angleY, 0, 1, 0);
-    // +Z (Front)
     glBindTexture(GL_TEXTURE_2D, textures[1]);
     glPushMatrix();
     glTranslatef(0, 0, offset);
-    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1);
     drawQuad(size);
     glPopMatrix();
 
-    // -Z (Back)
     glBindTexture(GL_TEXTURE_2D, textures[0]);
     glPushMatrix();
     glTranslatef(0, 0, -offset);
     glRotatef(180, 0, 1, 0);
-    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1);
     drawQuad(size);
     glPopMatrix();
 
-    // -X (Left)
     glBindTexture(GL_TEXTURE_2D, textures[2]);
     glPushMatrix();
     glTranslatef(-offset, 0, 0);
     glRotatef(-90, 0, 1, 0);
-    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1);
     drawQuad(size);
     glPopMatrix();
 
-    // +X (Right)
     glBindTexture(GL_TEXTURE_2D, textures[3]);
     glPushMatrix();
     glTranslatef(offset, 0, 0);
     glRotatef(90, 0, 1, 0);
-    glScalef(-1, -1, 1); // ✅ Y축 반전 추가
+    glScalef(-1, -1, 1);
     drawQuad(size);
     glPopMatrix();
 
@@ -113,7 +105,6 @@ void drawSkybox()
     drawQuad(size);
     glPopMatrix();
 
-    // -Y (Bottom)
     glBindTexture(GL_TEXTURE_2D, textures[5]);
     glPushMatrix();
     glTranslatef(0, -offset, 0);
@@ -121,8 +112,8 @@ void drawSkybox()
     drawQuad(size);
     glPopMatrix();
 
-    glPopMatrix(); // MODELVIEW
-    glPopAttrib(); // 상태 복원
+    glPopMatrix();
+    glPopAttrib();
 }
 void drawGround()
 {
@@ -131,7 +122,7 @@ void drawGround()
 
     if (!groundLoaded)
     {
-        groundTex = loadSkyboxTexture("Image/background/field.png"); // ✅ 상대경로 확인
+        groundTex = loadSkyboxTexture("Image/background/field.png");
         if (groundTex == 0)
         {
             printf("Failed to load field.png only once\n");
