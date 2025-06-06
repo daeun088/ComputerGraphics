@@ -379,8 +379,6 @@ void drawGuitarStringMarkers()
 
 void drawNeckEndpointsDebug()
 {
-    const float baseY = 0.015f;
-
     // 넥 시작점 (바디와 닿는 쪽)
     std::array<float, 3> neckStart = {0.0f, -0.4f, -0.06f};
 
@@ -399,6 +397,7 @@ void drawNeckEndpointsDebug()
     glutSolidSphere(0.005f, 12, 12); // 끝점
     glPopMatrix();
 }
+
 void drawStringsAlongNeck()
 {
     glLineWidth(1.0f);
@@ -442,10 +441,6 @@ void drawTuningKnobsOnTrapezoid(bool isRight)
         float t = (z - topZ) / (bottomZ - topZ);                        // 깊이에 따른 상대 위치
         float w = topW + (bottomW - topW) * t;                          // 현재 깊이의 헤드 폭
         float offsetX = (w / 2.0f + 0.005f) * (isRight ? 1.0f : -1.0f); // 좌우 대칭 X 위치
-
-        float pegOffset = 0.01f;                                   // 줄이 헤드 안쪽에서 시작하도록 약간 밀기
-        float pegX = offsetX - (isRight ? pegOffset : -pegOffset); // 안쪽으로
-                                                                   // pegPositions.push_back({pegX, 0.0f, z});
 
         glPushMatrix();
         glTranslatef(offsetX, 0.0f, z);                  // 위치 이동
@@ -635,7 +630,6 @@ void drawNeck()
     glTranslatef(0.0f, 0.04f, 0.16f);
     glScalef(1.0f, 1.4f, 1.9f); // 바디에 살짝 겹치도록 위치 조정
     // glScalef(0.08f, 0.05f, 0.6f);
-    //  👉 앞면 텍스처: 윗 d면(y = +h/2)
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texNeck);
     glColor3f(1.0f, 1.0f, 1.0f);
