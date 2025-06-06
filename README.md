@@ -33,3 +33,8 @@
   ./kk_project
 
 ## 🎬 시연 영상
+
+https://github.com/user-attachments/assets/82be95af-27aa-4038-a90b-0072a65db865
+
+
+
